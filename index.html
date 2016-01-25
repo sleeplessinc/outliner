@@ -11,15 +11,20 @@
 			background: #def;
 		}
 		div.ins_node {
-			background: #fed;
-			font-size: 80%;
+			height: 10px;
+		}
+		.ins_node:hover {
+			zbackground: #0ff;
+		}
+		.ins_node.over {
+			background: #0ff;
 		}
 	</style>
 </head>
 <body>
 
 <div id=tpl_node class=node>
-	<div class="ins_node" >&#9193;</div>
+	<div class="ins_node" ></div>
 	<div class=dragpart >
 		<input name="" type=text value="" data-key="">
 	</div>
@@ -28,7 +33,7 @@
 
 <h2>The Tree</h2>
 <div id=tree>
-	<div class="ins_node at_end" >&#9193;</div>
+	<div class="ins_node at_end" ></div>
 </div>
 
 

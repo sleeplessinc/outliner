@@ -49,6 +49,8 @@ insert_node = function() {
 		insert_node.call(clone, ev)
 	}
 	ins.ondrop = function(ev) {
+		ev.preventDefault();
+		$(ins).removeClass("over");
 		var oid = ev.dataTransfer.getData("id");
 		if(oid != id) {
 			log("MOVE "+oid+" before "+id);
@@ -68,10 +70,15 @@ insert_node = function() {
 		else {
 			//log("doing nothing");
 		}
-		ev.preventDefault();
 	}
-	ins.ondragenter = function(ev) { ev.preventDefault(); }
-	ins.ondragleave = function(ev) { ev.preventDefault(); }
+	ins.ondragenter = function(ev) {
+		ev.preventDefault();
+		$(ins).addClass("over");
+	}
+	ins.ondragleave = function(ev) {
+		ev.preventDefault();
+		$(ins).removeClass("over");
+	}
 	ins.ondragover = function(ev) { ev.preventDefault(); }
 
 	this.parentNode.insertBefore(clone, this);
@@ -92,6 +99,7 @@ $(document).ready(function() {
 	ins.onclick = insert_node;
 	ins.ondrop = function(ev) {
 		ev.preventDefault();
+		$(ins).removeClass("over");
 		var oid = ev.dataTransfer.getData("id");
 		log("MOVE "+oid+" to end");
 		var mover = I(oid);
@@ -101,8 +109,14 @@ $(document).ready(function() {
 			$(mover).find(".dragpart").slideDown();
 		});
 	}
-	ins.ondragenter = function(ev) { ev.preventDefault(); }
-	ins.ondragleave = function(ev) { ev.preventDefault(); }
+	ins.ondragenter = function(ev) {
+		ev.preventDefault();
+		$(ins).addClass("over");
+	}
+	ins.ondragleave = function(ev) {
+		ev.preventDefault();
+		$(ins).removeClass("over");
+	}
 	ins.ondragover = function(ev) { ev.preventDefault(); }
 
 });
