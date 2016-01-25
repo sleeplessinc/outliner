@@ -8,12 +8,13 @@ seq = function() {
 
 
 tpl_node = null;
+tree = null;
 
 data = {
 	tree: [],
 };
 
-
+/*
 model_to_ui = function(e, v) {
 	log("model_to_ui: v="+v+" data-key="+$(e).attr("data-key"));
 	return v;
@@ -25,51 +26,84 @@ ui_to_model = function(e, v) {
 }
 
 MVC.tie(data, model_to_ui, ui_to_model);
+*/
 
 
 
-new_node = function() {
-	var clone = tpl_node.cloneNode(true);
-	var id = seq();
-	$(clone).find("input").val("Node "+id);
-	var $el = $(clone).find(".ins_node");
-	$el.attr("data-index", id);
-	$el.click(ins_node);
-	//this.parentNode.appendChild(clone);
-	this.parentNode.insertBefore(clone, this);
-	$(clone).show();
-}
+insert_node = function() {
 
-ins_node = function() {
-	var pos = log(this.getAttribute("data-index"));
 	var clone = tpl_node.cloneNode(true);
 
 	var id = seq();
 
-	$(clone).find("input").val("Node "+id);
+	clone.id = id;
+	$(clone).find("input").val("node.id="+id);
+	$(clone).find(".dragpart").attr("draggable", "true");
 
-	var $el = $(clone).find(".ins_node");
+	clone.ondragstart = function(ev) {
+		ev.dataTransfer.setData("id", id);
+	}
 
-	$el.attr("data-index", id);
+	var ins = $(clone).find(".ins_node")[0];
+	ins.onclick = function(ev) {
+		insert_node.call(clone, ev)
+	}
+	ins.ondrop = function(ev) {
+		var oid = ev.dataTransfer.getData("id");
+		if(oid != id) {
+			log("MOVE "+oid+" before "+id);
+			var mover = I(oid);
+			//mover.remove();
+			//var neighbor = I(id);
+			//tree.insertBefore(mover, neighbor);
+			$(mover).find(".dragpart").slideUp(function() {
+				mover.remove();
+				var neighbor = I(id);
+				tree.insertBefore(mover, neighbor);
+				$(mover).find(".dragpart").slideDown();
+			});
 
-	$el.click(ins_node);
 
-	//this.parentNode.appendChild(clone);
+		}
+		else {
+			//log("doing nothing");
+		}
+		ev.preventDefault();
+	}
+	ins.ondragenter = function(ev) { ev.preventDefault(); }
+	ins.ondragleave = function(ev) { ev.preventDefault(); }
+	ins.ondragover = function(ev) { ev.preventDefault(); }
+
 	this.parentNode.insertBefore(clone, this);
-	$(clone).show();
+	$(clone).slideDown();
+
 }
-
-
 
 $(document).ready(function() {
 	log("document ready");
 
+	tree = I("tree");
+
 	tpl_node = I("tpl_node");
+	tpl_node.id = "";
 	$(tpl_node).hide();
 
-	$(".ins_node.at_end").click(function() {
-		ins_node.call(this);
-	});
+	var ins = $(".ins_node.at_end")[0];
+	ins.onclick = insert_node;
+	ins.ondrop = function(ev) {
+		ev.preventDefault();
+		var oid = ev.dataTransfer.getData("id");
+		log("MOVE "+oid+" to end");
+		var mover = I(oid);
+		$(mover).find(".dragpart").slideUp(function() {
+			mover.remove();
+			tree.insertBefore(mover, ins);
+			$(mover).find(".dragpart").slideDown();
+		});
+	}
+	ins.ondragenter = function(ev) { ev.preventDefault(); }
+	ins.ondragleave = function(ev) { ev.preventDefault(); }
+	ins.ondragover = function(ev) { ev.preventDefault(); }
 
 });
 

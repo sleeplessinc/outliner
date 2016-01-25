@@ -7,30 +7,28 @@
 
 	<script src=local.js></script>
 	<style>
-		div.node {
+		div.node .dragpart {
 			background: #def;
-			margin: 0;
 		}
-		div.node h2 {
-			margin: 0;
-		}
-		div.dropspot {
+		div.ins_node {
 			background: #fed;
-			margin: 0;
+			font-size: 80%;
 		}
 	</style>
 </head>
 <body>
 
 <div id=tpl_node class=node>
-	<div class="dropspot"><span class=ins_node data-index=>&#9193;</span></div>
-	<h2><input name="" type=text value="" data-key=""></h2>
+	<div class="ins_node" >&#9193;</div>
+	<div class=dragpart >
+		<input name="" type=text value="" data-key="">
+	</div>
 </div>
 
 
 <h2>The Tree</h2>
 <div id=tree>
-	<div class="dropspot"><span class="ins_node at_end" >&#9193;</span>append to end</div>
+	<div class="ins_node at_end" >&#9193;</div>
 </div>
 
 
