@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "jquery": "^2.2.0",
+    "jquery": "^3.0.0",
     "sleepless": "^2.3.0",
     "sleepless-mvc": "^2.0.0",
     "sleepless-replicate": "^2.2.0"
